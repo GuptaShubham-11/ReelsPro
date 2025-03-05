@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, models, mongo } from "mongoose";
+import mongoose, { Schema, model, models } from "mongoose";
 
 export const VIDEO_DIMENTION = {
     width: 1080,
@@ -64,6 +64,6 @@ const videoSchema = new Schema<IVideo>(
     }
 );
 
-const Video = models.Video || model<IVideo>("Video", videoSchema);
+const Video = models?.Video || model<IVideo>("Video", videoSchema);
 
 export default Video;

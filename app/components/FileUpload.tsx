@@ -59,12 +59,12 @@ export default function FileUpload({
             const validTypes = ["image/jpeg", "image/png", "image/webp"];
 
             if (!validTypes.includes(file.type)) {
-                setError("Please upload a valid image file[jpeg, png, webp]");
+                setError("Please upload a valid image file [jpeg, png, webp]");
                 return false;
             }
 
             if (file.size > 5 * 1024 * 1024) {
-                setError("Video file must be less than 5MB");
+                setError("Image file must be less than 5MB");
                 return false;
             }
         }
@@ -74,7 +74,11 @@ export default function FileUpload({
 
     return (
         <div className="space-y-2">
+            <label htmlFor="file-upload" className="btn btn-primary w-full">
+                {uploading ? "Uploading..." : "Upload File"}
+            </label>
             <IKUpload
+                id="file-upload"
                 fileName={fileType === "video" ? "video" : "image"}
                 useUniqueFileName={true}
                 validateFile={validateFile}
@@ -83,18 +87,8 @@ export default function FileUpload({
                 onUploadProgress={handleProgress}
                 onUploadStart={handleStartUpload}
                 accept={fileType === "video" ? "video/*" : "image/*"}
-                className="file-input file-input-bordered w-full"
+                className="hidden"
                 folder={fileType === "video" ? "/videos" : "/images"}
-                transformation={{
-                    pre: "l-text,i-Imagekit,fs-50,l-end",
-                    post: [
-                        {
-                            type: "transformation",
-                            value: "w-100",
-                        },
-                    ],
-                }}
-                style={{ display: 'none' }}
             />
             {uploading && (
                 <div className="flex items-center gap-2 text-sm text-primary">
@@ -102,8 +96,8 @@ export default function FileUpload({
                     <span>Uploading...</span>
                 </div>
             )}
-
             {error && <div className="text-error text-sm">{error}</div>}
         </div>
     );
+
 }
