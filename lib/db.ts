@@ -29,7 +29,10 @@ export async function connectToDatabase() {
         }
 
         cached.promise = mongoose
-            .connect(MONGODB_URI, opts)
+            .connect(MONGODB_URI, {
+                dbName: "shorts",
+                ...opts
+            })
             .then(() => mongoose.connection);
     }
 

@@ -1,21 +1,22 @@
 import { connectToDatabase } from "@/lib/db";
 import Video from "@/models/Video";
-import { NextResponse } from "next/server";
-import mongoose from "mongoose";
+import { NextResponse, NextRequest } from "next/server";
 
-export async function GET(
-    request: Request,
-    context: { params: { id: string } }
-) {
+export async function GET(request: NextRequest) {
     try {
         await connectToDatabase();
-        const { id } = await context.params;
 
-        if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+        const { id } = await request.json();
+
+        console.log(id);
+
+
+
+        if (!id) {
             return NextResponse.json(
-                { error: "Invalid or missing video ID" },
+                { error: "Missing videoId" },
                 { status: 400 }
-            );
+            )
         }
 
         const video = await Video.findById(id).lean();
@@ -24,16 +25,18 @@ export async function GET(
             return NextResponse.json(
                 { error: "Video not found" },
                 { status: 404 }
-            );
+            )
         }
 
+        console.log(video);
+
+
         return NextResponse.json(video, { status: 200 });
+
     } catch (error) {
-        console.error("Error fetching video:", error);
         return NextResponse.json(
             { error: "Failed to fetch video" },
             { status: 500 }
         );
     }
 }
-

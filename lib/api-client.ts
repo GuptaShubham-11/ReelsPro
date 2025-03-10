@@ -40,7 +40,9 @@ class ApiClient {
     }
 
     async getVideo(id: string) {
-        return this.fetch<IVideo>(`/videos/${encodeURIComponent(id)}`);
+        return this.fetch<IVideo>("/get-video", {
+            body: { id },
+        });
     }
 
     async createVideo(videoData: VideoFormData) {
